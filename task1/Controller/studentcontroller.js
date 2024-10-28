@@ -323,7 +323,7 @@ const uploadimage = async (req, res) => {
         if (!req.file) {
             return res.status(400).json({ message: "Error: No file uploaded" });
         }
-
+      
         if (!id) {
             return res.status(400).json({ message: "Error: No student ID provided" });
         }
