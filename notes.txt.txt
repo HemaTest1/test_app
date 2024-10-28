@@ -1,0 +1,463 @@
+
+
+commands :
+----------
+ng build --configuration production
+-> after excited this command dist folder folder will be created in the angular  -> copy all content of dist folders .
+ production-student -> 
+ c2c-backed-3.0- > server side -> src -> main -> resources ->static ->  past the copied connect dist folder to static folder.
+
+-> open spring boot project in eclipse -> after changes
+-> run  maven build -> goals -> install -> click skip tests -> the apply and  run -> after that you will get a build succuss msg
+
+ MobaXterm :
+------------
+cd /
+ ls 
+cd opt 
+ ls  => tomcat
+cd tomcat
+ls  => webapps
+cd webapps
+ls => c2c.war file
+f - root
+c - lara.lo.in
+pwd -> present working directory
+cp ->  copy
+
+=> cp /opt/tomcat/webapps/c2c.war  /root/lara.co.in
+-> upload new war file after that stop
+cd /opt/tomcat/bin
+ls
+-> stop the tomcat server
+./Catalina.sh  stop 
+
+-> cd ..
+cd webapps
+
+-> pwd
+./Catalina.sh start
+
+-> cd .. -> logs -> tomcats 
+ 
+-> tail -n 200 catalina.out
+
+
+
+Node js:
+--------
+
+
+Microsoft Windows [Version 10.0.22631.4317]
+(c) Microsoft Corporation. All rights reserved.
+
+D:\nodeJs>npm init -y
+Wrote to D:\nodeJs\package.json:
+
+{
+  "name": "nodejs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
+
+
+
+D:\nodeJs>npm i sequelize mysql
+
+added 32 packages, and audited 33 packages in 6s
+
+1 package is looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+
+D:\nodeJs>npm i express
+
+added 70 packages, and audited 103 packages in 10s
+
+14 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+
+D:\nodeJs>code ..
+
+D:\nodeJs>npm i nodemon
+
+added 26 packages, and audited 129 packages in 3s
+
+18 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+
+D:\nodeJs>npm start
+
+> nodejs@1.0.0 start
+> nodemon c1.js
+
+[nodemon] 3.1.7
+[nodemon] to restart at any time, enter `rs`
+[nodemon] watching path(s): *.*
+[nodemon] watching extensions: js,mjs,cjs,json
+[nodemon] starting `node c1.js`
+Welcome to node js
+[nodemon] clean exit - waiting for changes before restart
+[nodemon] restarting due to changes...
+[nodemon] starting `node c1.js`
+Welcome to node js
+[nodemon] clean exit - waiting for changes before restart
+[nodemon] restarting due to changes...
+[nodemon] starting `node c1.js`
+Welcome to node js
+[nodemon] clean exit - waiting for changes before restart
+[nodemon] restarting due to changes...
+[nodemon] starting `node c1.js`
+Welcome to node js
+[nodemon] clean exit - waiting for changes before restart
+D:\nodeJs\task1>npm  i dotenv
+
+added 1 package, and audited 130 packages in 2s
+
+19 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+
+D:\nodeJs\task1>npm i mysql2
+
+added 12 packages, and audited 142 packages in 3s
+
+20 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+
+D:\nodeJs\task1>npm start
+
+> task1@1.0.0 start
+> nodemon sever.js
+
+
+
+CREATE USER 'root'@'localhost' IDENTIFIED BY 'root';
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost';
+FLUSH PRIVILEGES;
+
+PS D:\nodeJs\task1> npm install multer
+>>
+
+added 10 packages, and audited 152 packages in 2s
+
+21 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+
+
+npm i path
+
+added 4 packages, and audited 156 packages in 2s
+
+21 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+
+
+
+table :
+-------
+D:\nodeJs\task1>npm start
+
+> task1@1.0.0 start
+> nodemon sever.js
+
+[nodemon] 3.1.7
+[nodemon] to restart at any time, enter `rs`
+[nodemon] watching path(s): *.*
+[nodemon] watching extensions: js,mjs,cjs,json
+[nodemon] starting `node sever.js`
+Executing (default): SELECT 1+1 AS result
+Executing (default): SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_NAME = 'PersonEntities' AND TABLE_SCHEMA = 'person'
+connected to the serve
+Executing (default): CREATE TABLE IF NOT EXISTS `PersonEntities` (`id` INTEGER auto_increment , `name` VARCHAR(255) NOT NULL, `email` VARCHAR(255) NOT NULL UNIQUE, `age` INTEGER NOT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB;
+Executing (default): SHOW INDEX FROM `PersonEntities`
+Server is running on 3000
+
+
+
+first step is : Configuration for Database Connection
+----------------
+.env :
+------
+DB_USERNAME = root
+DB_PASSWORD = root
+DB_DIALECT = mysql
+DB_NAME = person
+DB_HOST = localhost
+
+
+2nd step is : db config    Database Configuration (dbConfig/personConfig.js)
+--------------
+PersonConfig :
+--------------
+
+require('dotenv').config();
+
+module.exports = {
+    HOST: process.env.DB_HOST,        // Host for the database
+    USER: process.env.DB_USERNAME,    // Database username (change from NAME to USER)
+    PASSWORD: process.env.DB_PASSWORD, // Database password
+    DB: process.env.DB_NAME,           // Database name (change from USERNAME to NAME)
+    dialect: process.env.DB_DIALECT,   // Database dialect
+    pool: {
+        max: 5,
+        min: 0,
+        acquire: 30000,               // Consider adjusting this value as needed
+        idle: 10000
+    }
+};
+
+
+3rd step is :  models :  Sequelize Initialization and Authentication (models/index.js)
+------------- 
+index.js
+--------
+
+const {Sequelize, DataTypes} = require('sequelize');
+const personConfig = require('../dbConfig/personConfig');
+
+const sequelize = new Sequelize(
+    personConfig.DB,
+    personConfig.USER,
+    personConfig.PASSWORD,{
+        host : personConfig.HOST,
+        dialect:personConfig.dialect,
+        pool:{
+            max : personConfig.pool.max,
+            min : personConfig.pool.min,
+            idle : personConfig.pool.idle
+        }
+    });
+
+    sequelize.authenticate()
+    .then(() =>{
+        console.log(`connected to the serve`)
+    })
+    .catch(err => {
+        console.log(`Error connecting to the server`,err);
+    });
+
+    const db = {};
+    db.Sequelize = Sequelize;
+    db.Sequelize= sequelize;
+
+    db.PersonEntity = require("./PersonEntity")(sequelize,DataTypes);
+
+
+    module.exports = db;
+
+
+
+4 th stpe is : PersonEntity   :  Person Model (models/PersonEntity.js)
+---------------
+const { DataTypes } = require("sequelize");
+
+module.exports = (sequelize) => {
+    const PersonEntity = sequelize.define('PersonEntity', {
+        id: {
+            type: DataTypes.INTEGER,
+            autoIncrement: true,
+            primaryKey: true,
+        },
+        name: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        email: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            unique: true,
+        },
+        age: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+        },
+    }, {
+        // tableName: 'persons', // table name in the database
+        timestamps: false, // if you don't want createdAt and updatedAt fields
+    });
+
+    return PersonEntity;
+};
+
+step 5 :
+--------
+Express Server Setup (server.js)
+
+
+and again update or export modules in index.js file and server.
+
+
+
+PS D:\nodeJs\task1> npm i cors
+
+added 2 packages, and audited 142 packages in 1s
+
+20 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+
+
+
+
+
+
+PS D:\vite> npm create vite@latest
+√ Project name: ... cssStyles
+√ Package name: ... css
+√ Select a framework: » React
+√ Select a variant: » JavaScript
+
+Scaffolding project in D:\vite\cssStyles...
+
+Done. Now run:
+
+  cd cssStyles
+  npm install
+  npm run dev
+
+PS D:\vite> cd cssStyles
+PS D:\vite\cssStyles> npm install
+
+added 258 packages, and audited 259 packages in 17s
+
+100 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+PS D:\vite\cssStyles> npm run dev
+
+> css@0.0.0 dev
+> vite
+
+Port 5173 is in use, trying another one...
+Port 5174 is in use, trying another one...
+
+  VITE v5.4.9  ready in 268 ms
+
+  ➜  Local:   http://localhost:5175/
+  ➜  Network: use --host to expose
+  ➜  press h + enter to show help
+^C^CTerminate batch job (Y/N)?
+
+----------------------------------------------------
+
+D:\vite>npm create vite@latest
+Need to install the following packages:
+create-vite@5.5.4
+Ok to proceed? (y) y
+√ Project name: ... question
+√ Select a framework: » React
+√ Select a variant: » JavaScript
+
+Scaffolding project in D:\vite\question...
+
+Done. Now run:
+
+  cd question
+  npm install
+  npm run dev
+
+
+D:\vite>cd question
+
+D:\vite\question>npm install
+
+added 257 packages, and audited 258 packages in 12s
+
+100 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+
+D:\vite\question>npm run dev
+
+> question@0.0.0 dev
+> vite
+
+
+  VITE v5.4.10  ready in 254 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: use --host to expose
+  ➜  press h + enter to show help
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+https://github.com/Vinay-Dakshanthaka/lara_training_inst/blob/master/laraNode/controllers/cumulativeTestController.js#L1188
